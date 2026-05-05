@@ -1,0 +1,619 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif;}
+.db{background:#F4F5F7;padding:16px;border-radius:12px;}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.logo-sq{width:26px;height:26px;background:#2E5FA3;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-sq span{color:#fff;font-size:10px;font-weight:700;}
+.logo-title{color:#111827;font-size:13px;font-weight:600;}
+.logo-sub{color:#9CA3AF;font-size:10px;}
+.selector{background:#fff;border:1px solid #E5E7EB;color:#6B7280;font-size:11px;padding:5px 10px;border-radius:8px;margin-left:auto;}
+.tabs{display:flex;gap:2px;margin-bottom:14px;border-bottom:1px solid #E5E7EB;}
+.tab{padding:8px 14px;font-size:11px;color:#9CA3AF;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;}
+.tab.active{color:#111827;border-bottom:2px solid #2E5FA3;font-weight:600;}
+.tab:hover:not(.active){color:#6B7280;}
+.tab.opp.active{border-bottom-color:#E8501A;color:#E8501A;}
+.page-title{color:#111827;font-size:15px;font-weight:700;margin-bottom:3px;}
+.page-sub{color:#9CA3AF;font-size:10px;margin-bottom:14px;}
+.section-label{color:#9CA3AF;font-size:9px;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;font-weight:600;}
+.card{background:#fff;border:1px solid #E5E7EB;border-radius:10px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04);}
+.ai-box{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:6px;padding:8px 10px;margin-top:10px;}
+.ai-lbl{color:#1D4ED8;font-size:9px;font-weight:700;letter-spacing:.5px;margin-bottom:3px;}
+.ai-txt{color:#1E40AF;font-size:10px;line-height:1.5;}
+.action-box{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:6px;padding:8px 10px;margin-top:6px;}
+.action-lbl{color:#15803D;font-size:9px;font-weight:700;letter-spacing:.5px;margin-bottom:3px;}
+.action-txt{color:#166534;font-size:10px;line-height:1.5;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.vlink{color:#2E5FA3;font-size:10px;cursor:pointer;display:inline-block;margin-top:6px;}
+.stat-card{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:8px;padding:10px 12px;text-align:center;}
+.stat-val{color:#111827;font-size:17px;font-weight:700;margin-bottom:2px;}
+.stat-label{color:#9CA3AF;font-size:10px;}
+.stat-sub{font-size:9px;margin-top:2px;}
+.up{color:#059669;}
+.dn{color:#DC2626;}
+.amber{color:#D97706;}
+
+/* tab panels */
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* Tab1 */
+.tm-row{display:flex;gap:3px;margin-bottom:3px;}
+.tm-cell{border-radius:5px;padding:6px 8px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;}
+.tm-brand{color:rgba(255,255,255,0.9);font-size:10px;font-weight:600;}
+.tm-share{color:rgba(255,255,255,0.6);font-size:9px;}
+.new-badge{position:absolute;top:5px;right:5px;background:#E8501A;color:#fff;font-size:7px;font-weight:700;padding:1px 5px;border-radius:3px;}
+.new-list{display:flex;flex-direction:column;gap:6px;}
+.new-item{display:flex;align-items:center;gap:8px;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:7px;padding:8px 10px;}
+.new-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.new-brand{color:#111827;font-size:11px;font-weight:600;margin-bottom:1px;}
+.new-product{color:#6B7280;font-size:9px;}
+.new-date{color:#9CA3AF;font-size:9px;margin-left:auto;flex-shrink:0;}
+.new-tag{font-size:8px;padding:1px 6px;border-radius:4px;font-weight:600;background:#FEF0E8;color:#E8501A;flex-shrink:0;}
+
+/* Tab2 */
+.share-bar-wrap{display:flex;height:26px;border-radius:5px;overflow:hidden;margin-bottom:10px;gap:1px;}
+.share-seg{display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:rgba(255,255,255,0.9);}
+.matrix{width:100%;border-collapse:collapse;}
+.matrix th{color:#9CA3AF;font-size:9px;text-transform:uppercase;letter-spacing:.4px;padding:6px 8px;text-align:center;border-bottom:1px solid #E5E7EB;font-weight:600;}
+.matrix th.left{text-align:left;}
+.matrix th.sn{color:#2E5FA3;}
+.matrix td{padding:7px 8px;border-bottom:1px solid #F3F4F6;font-size:10px;text-align:center;}
+.matrix td.feat{text-align:left;color:#374151;}
+.matrix tr:hover td{background:#F9FAFB;}
+.matrix tr:last-child td{border-bottom:none;}
+.sn-col{background:#EFF6FF;}
+.check{color:#16A34A;}
+.cross{color:#DC2626;}
+.half{color:#D97706;}
+.mini-bar{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
+.mb-label{color:#6B7280;font-size:10px;width:64px;flex-shrink:0;}
+.mb-track{flex:1;background:#F3F4F6;border-radius:2px;height:5px;}
+.mb-fill{height:5px;border-radius:2px;}
+.mb-val{color:#9CA3AF;font-size:10px;width:28px;text-align:right;flex-shrink:0;}
+.bar-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
+.br-label{color:#6B7280;font-size:10px;width:64px;flex-shrink:0;}
+.br-track{flex:1;background:#F3F4F6;border-radius:2px;height:5px;}
+.br-fill{height:5px;border-radius:2px;}
+.br-val{color:#9CA3AF;font-size:10px;width:28px;text-align:right;flex-shrink:0;}
+.theme-lbl{color:#9CA3AF;font-size:9px;margin:8px 0 4px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;}
+.leg-row{display:flex;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.leg-i{display:flex;align-items:center;gap:4px;}
+.leg-d{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+.leg-t{color:#6B7280;font-size:9px;}
+
+/* Tab3 */
+.pros-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #F3F4F6;}
+.pros-item:last-child{border-bottom:none;}
+.pros-rank{color:#9CA3AF;font-size:10px;width:14px;flex-shrink:0;}
+.pros-main{flex:1;}
+.pros-name{color:#374151;font-size:11px;margin-bottom:3px;}
+.pros-bars{display:flex;flex-direction:column;gap:2px;}
+.pros-bar-row{display:flex;align-items:center;gap:4px;}
+.pros-bar-lbl{color:#9CA3AF;font-size:9px;width:52px;flex-shrink:0;}
+.pros-track{flex:1;background:#F3F4F6;border-radius:2px;height:3px;}
+.pros-track.g{background:#DCFCE7;}
+.pros-fill{height:3px;border-radius:2px;}
+.pros-pct{font-size:9px;width:24px;text-align:right;flex-shrink:0;}
+.diff-badge{font-size:9px;font-weight:700;padding:1px 6px;border-radius:5px;flex-shrink:0;}
+.diff-pos{background:#DCFCE7;color:#15803D;}
+.diff-neu{background:#F3F4F6;color:#9CA3AF;}
+.cons-item{display:flex;flex-direction:column;gap:3px;padding:7px 0;border-bottom:1px solid #F3F4F6;}
+.cons-item:last-child{border-bottom:none;}
+.cons-top{display:flex;align-items:center;gap:8px;}
+.cons-rank{color:#9CA3AF;font-size:10px;width:14px;flex-shrink:0;}
+.cons-name{color:#374151;font-size:11px;flex:1;}
+.cons-pct{font-size:10px;font-weight:600;width:28px;text-align:right;flex-shrink:0;}
+.cons-track{background:#F3F4F6;border-radius:2px;height:3px;margin:2px 22px;}
+.cons-fill{height:3px;border-radius:2px;}
+.pills-row{display:flex;gap:4px;flex-wrap:wrap;padding-left:22px;}
+.pill{font-size:8px;padding:2px 6px;border-radius:5px;font-weight:600;}
+.bubble-area{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0;}
+.bubble{border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:9px;font-weight:600;line-height:1.2;}
+
+/* Tab4 */
+.trend-card{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:7px;padding:9px 12px;margin-bottom:6px;display:flex;align-items:center;gap:10px;}
+.platform-badge{font-size:8px;font-weight:700;padding:2px 7px;border-radius:4px;flex-shrink:0;width:44px;text-align:center;}
+.trend-main{flex:1;min-width:0;}
+.trend-name{color:#111827;font-size:11px;font-weight:600;margin-bottom:1px;}
+.trend-desc{color:#9CA3AF;font-size:9px;}
+.trend-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;}
+.trend-val{color:#111827;font-size:11px;font-weight:700;}
+.trend-growth{font-size:9px;font-weight:700;color:#059669;}
+.spark-mini{width:48px;height:16px;}
+.patent-item{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:7px;padding:8px 12px;margin-bottom:5px;display:flex;gap:8px;align-items:flex-start;}
+.patent-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:2px;}
+.patent-title{color:#374151;font-size:10px;font-weight:600;margin-bottom:2px;}
+.patent-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.patent-co{color:#6B7280;font-size:9px;}
+.patent-date{color:#9CA3AF;font-size:9px;}
+.patent-tag{font-size:8px;padding:1px 6px;border-radius:4px;font-weight:600;}
+.mkt-reco{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:8px;padding:12px;margin-bottom:8px;}
+.reco-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.reco-num{width:20px;height:20px;border-radius:50%;background:#2E5FA3;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.reco-title{color:#111827;font-size:11px;font-weight:600;flex:1;}
+.urgency-badge{font-size:8px;font-weight:700;padding:2px 7px;border-radius:5px;flex-shrink:0;}
+.badge-now{background:#FEF0E8;color:#E8501A;}
+.badge-soon{background:#FEF3C7;color:#92400E;}
+.badge-sustain{background:#DCFCE7;color:#15803D;}
+.reco-row{display:flex;gap:6px;margin-bottom:4px;}
+.reco-lbl{color:#9CA3AF;font-size:9px;width:52px;flex-shrink:0;padding-top:1px;}
+.reco-val{color:#6B7280;font-size:10px;line-height:1.4;flex:1;}
+.reco-trend{color:#2E5FA3;font-size:9px;font-weight:600;}
+
+/* Tab5 */
+.flow-row{display:flex;align-items:center;gap:0;overflow-x:auto;margin-bottom:12px;padding-bottom:4px;}
+.flow-node{background:#F9FAFB;border:1px solid #E5E7EB;border-radius:8px;padding:8px 10px;flex-shrink:0;text-align:center;min-width:90px;}
+.flow-node.active{border-color:#E8501A;background:#FFF7ED;}
+.flow-node-label{color:#9CA3AF;font-size:8px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;}
+.flow-node-val{color:#111827;font-size:10px;font-weight:600;}
+.flow-node-sub{color:#9CA3AF;font-size:8px;margin-top:1px;}
+.flow-arrow{color:#D1D5DB;font-size:14px;padding:0 6px;flex-shrink:0;}
+.matrix-table{width:100%;border-collapse:collapse;}
+.matrix-table th{color:#9CA3AF;font-size:9px;text-transform:uppercase;letter-spacing:.4px;padding:7px 8px;border-bottom:1px solid #E5E7EB;font-weight:600;text-align:center;}
+.matrix-table th.left{text-align:left;}
+.matrix-table td{padding:7px 8px;border-bottom:1px solid #F3F4F6;font-size:10px;text-align:center;vertical-align:middle;}
+.matrix-table td.name{text-align:left;color:#374151;font-weight:500;}
+.matrix-table tr:last-child td{border-bottom:none;}
+.matrix-table tr:hover td{background:#F9FAFB;}
+.score-pill{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.geo-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #F3F4F6;}
+.geo-row:last-child{border-bottom:none;}
+.geo-row.hl{background:#FFF7ED;border-radius:6px;padding:7px 8px;}
+.geo-feat{color:#374151;font-size:10px;font-weight:500;width:130px;flex-shrink:0;}
+.geo-cell{flex:1;text-align:center;}
+.geo-badge{display:inline-block;font-size:8px;font-weight:700;padding:2px 7px;border-radius:5px;}
+.geo-main{background:#DCFCE7;color:#15803D;}
+.geo-emerg{background:#FEF3C7;color:#92400E;}
+.geo-untap{background:#DBEAFE;color:#1E40AF;}
+.opp-card{background:#fff;border:2px solid #E8501A;border-radius:12px;padding:16px;margin-bottom:12px;}
+.opp-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.opp-title{color:#111827;font-size:14px;font-weight:700;flex:1;}
+.opp-window{background:#FEF0E8;color:#E8501A;font-size:9px;font-weight:700;padding:3px 10px;border-radius:10px;flex-shrink:0;}
+.opp-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px;}
+.opp-col label{color:#9CA3AF;font-size:9px;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:3px;}
+.opp-col p{color:#374151;font-size:10px;line-height:1.5;}
+.opp-col p strong{color:#111827;}
+.action-timeline{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.action-step{border-radius:8px;padding:10px 12px;}
+.action-timing{font-size:9px;font-weight:700;margin-bottom:3px;}
+.action-desc{color:#6B7280;font-size:10px;line-height:1.4;}
+</style>
+
+<div class="db">
+  <div class="topbar">
+    <div class="logo-sq"><span>SN</span></div>
+    <div>
+      <div class="logo-title">SharkNinja</div>
+      <div class="logo-sub">Category Crusher</div>
+    </div>
+    <select class="selector" onchange="switchTab(this.value)">
+      <option>Shark IQ Robot RV1001AE</option>
+      <option>Shark Stratos Cordless IX141</option>
+    </select>
+  </div>
+
+  <div class="tabs">
+    <a class="tab" href="sharkninja_main_combined.html" style="text-decoration:none;">← Overview</a>
+    <div class="tab active" id="t1" onclick="switchPanel('t1','p1')">Market overview</div>
+    <div class="tab" id="t2" onclick="switchPanel('t2','p2')">Competitive intel</div>
+    <div class="tab" id="t3" onclick="switchPanel('t3','p3')">Consumer voice</div>
+    <div class="tab" id="t4" onclick="switchPanel('t4','p4')">Market signals</div>
+    <div class="tab opp" id="t5" onclick="switchPanel('t5','p5')">Opportunity ★</div>
+  </div>
+
+  <!-- TAB 1 -->
+  <div class="panel active" id="p1">
+    <div class="page-title">Market overview</div>
+    <div class="page-sub">Robot vacuum category · All players · US & Global · April 2026</div>
+    <div class="grid3">
+      <div class="stat-card"><div class="stat-val">12</div><div class="stat-label">Players</div><div class="stat-sub up">+2 new Q1</div></div>
+      <div class="stat-card"><div class="stat-val">$4.2B</div><div class="stat-label">US market</div><div class="stat-sub up">+11% YoY</div></div>
+      <div class="stat-card"><div class="stat-val">23%</div><div class="stat-label">SN share</div><div class="stat-sub dn">Roomba leads 31%</div></div>
+    </div>
+    <div class="card">
+      <div class="section-label">Market share — all players</div>
+      <div style="margin-bottom:4px;">
+        <div class="tm-row" style="height:76px;">
+          <div class="tm-cell" style="flex:31;background:#4B5563;"><div class="tm-brand">iRobot Roomba</div><div class="tm-share">31%</div></div>
+          <div class="tm-cell" style="flex:23;background:#2E5FA3;"><div class="tm-brand">SharkNinja</div><div class="tm-share">23%</div></div>
+          <div class="tm-cell" style="flex:19;background:#0F6E56;"><div class="tm-brand">Dyson</div><div class="tm-share">19%</div></div>
+        </div>
+        <div class="tm-row" style="height:52px;">
+          <div class="tm-cell" style="flex:17;background:#854F0B;"><div class="tm-brand">Roborock</div><div class="tm-share">17%</div></div>
+          <div class="tm-cell" style="flex:4;background:#6D28D9;"><div class="tm-brand" style="font-size:9px;">Eufy</div><div class="tm-share" style="font-size:8px;">4%</div></div>
+          <div class="tm-cell" style="flex:3;background:#B91C1C;"><div class="tm-brand" style="font-size:9px;">Bissell</div><div class="tm-share" style="font-size:8px;">3%</div></div>
+          <div class="tm-cell" style="flex:2;background:#BE185D;position:relative;"><div class="tm-brand" style="font-size:8px;">Narwal</div><div class="new-badge">NEW</div></div>
+          <div class="tm-cell" style="flex:1;background:#065F46;position:relative;"><div class="tm-brand" style="font-size:8px;">Matic</div><div class="new-badge">NEW</div></div>
+        </div>
+      </div>
+      <div class="ai-box"><div class="ai-lbl">AI insight</div><div class="ai-txt">Roomba losing ground — down 4% YoY. Roborock fastest grower (+8%) targeting SN's value segment. Narwal and Matic are AI-first with VC backing — monitor closely.</div></div>
+      <div class="action-box"><div class="action-lbl">Action</div><div class="action-txt">Defend value positioning vs Roborock. Track Narwal and Matic quarterly — AI-first angle could disrupt mid-range within 18 months.</div></div>
+    </div>
+    <div class="grid2">
+      <div class="card" style="margin-bottom:0;">
+        <div class="section-label">New entrants — Q1 2026</div>
+        <div class="new-list">
+          <div class="new-item"><div class="new-dot" style="background:#BE185D;"></div><div><div class="new-brand">Narwal</div><div class="new-product">Freo X Ultra — AI obstacle avoid</div></div><div class="new-date">Jan 2026</div><div class="new-tag">NEW</div></div>
+          <div class="new-item"><div class="new-dot" style="background:#065F46;"></div><div><div class="new-brand">Matic</div><div class="new-product">Matic Robot — LLM-powered nav</div></div><div class="new-date">Feb 2026</div><div class="new-tag">NEW</div></div>
+          <div class="new-item"><div class="new-dot" style="background:#4338CA;"></div><div><div class="new-brand">Samsung</div><div class="new-product">Bespoke Jet Bot AI+ relaunch</div></div><div class="new-date">Mar 2026</div><div class="new-tag">NEW</div></div>
+        </div>
+        <div class="ai-box"><div class="ai-lbl">AI insight</div><div class="ai-txt">All 3 new entrants lead with AI/LLM features. Pure hardware specs no longer sufficient to differentiate.</div></div>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="section-label">US vs Global market share</div>
+        <div class="leg-row"><div class="leg-i"><div class="leg-d" style="background:#2E5FA3;"></div><span class="leg-t">US</span></div><div class="leg-i"><div class="leg-d" style="background:#059669;border-radius:50%;"></div><span class="leg-t">Global</span></div></div>
+        <div style="position:relative;width:100%;height:150px;"><canvas id="barChart" role="img" aria-label="US vs Global market share grouped bar chart"></canvas></div>
+        <div class="ai-box"><div class="ai-lbl">AI insight</div><div class="ai-txt">SN overindexes US (23%) vs global (14%). Roborock dominates globally (28%). Significant global expansion opportunity.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2 -->
+  <div class="panel" id="p2">
+    <div class="page-title">Competitive intel</div>
+    <div class="page-sub">Shark IQ Robot vs key competitors · Robot vacuum category</div>
+    <div class="card">
+      <div class="section-label">Market share context</div>
+      <div class="share-bar-wrap">
+        <div class="share-seg" style="flex:31;background:#4B5563;">Roomba 31%</div>
+        <div class="share-seg" style="flex:23;background:#2E5FA3;">SN 23%</div>
+        <div class="share-seg" style="flex:19;background:#0F6E56;">Dyson 19%</div>
+        <div class="share-seg" style="flex:17;background:#854F0B;">Roborock 17%</div>
+        <div class="share-seg" style="flex:10;background:#9CA3AF;">Others</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-label">Feature comparison matrix</div>
+      <table class="matrix">
+        <thead><tr><th class="left" style="width:30%;">Feature</th><th class="sn">SN IQ</th><th>Roomba j7+</th><th>Dyson V15</th><th>Roborock S8</th></tr></thead>
+        <tbody>
+          <tr><td class="feat">Auto-empty dock</td><td class="sn-col"><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td class="feat">Precision mapping</td><td class="sn-col"><span class="half">◑</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td class="feat">Quiet mode</td><td class="sn-col"><span class="cross">✗</span></td><td><span class="half">◑</span></td><td><span class="check">✓</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td class="feat">Mop function</td><td class="sn-col"><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td class="feat">App control</td><td class="sn-col"><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="half">◑</span></td><td><span class="check">✓</span></td></tr>
+          <tr><td class="feat">Self-clean dock</td><td class="sn-col"><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td class="feat">Price</td><td class="sn-col" style="color:#15803D;font-weight:700;">$299</td><td style="color:#6B7280;">$449</td><td style="color:#6B7280;">$749</td><td style="color:#6B7280;">$399</td></tr>
+        </tbody>
+      </table>
+      <div class="ai-box"><div class="ai-lbl">AI insight</div><div class="ai-txt">Self-clean dock missing across ALL competitors — biggest uncontested opportunity. SN uniquely lags quiet mode while Dyson leads despite lower overall feature count. $299 is SN's clearest moat.</div></div>
+      <div class="action-box"><div class="action-lbl">Action</div><div class="action-txt">Self-clean dock = first-mover opportunity. Add quiet mode to next hardware iteration.</div></div>
+    </div>
+    <div class="grid2">
+      <div class="card" style="margin-bottom:0;">
+        <div class="section-label">Price vs rating — value map</div>
+        <div style="position:relative;width:100%;height:180px;"><canvas id="scatter" role="img" aria-label="Scatter plot price vs rating"></canvas></div>
+        <div class="ai-box"><div class="ai-lbl">AI insight</div><div class="ai-txt">SN has the best price-to-rating ratio. Dyson charges 2.5x more for marginally better rating — SN's value story is strong and defensible.</div></div>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="section-label">Complaint rate by theme</div>
+        <div class="leg-row">
+          <div class="leg-i"><div class="leg-d" style="background:#2E5FA3;"></div><span class="leg-t">SN IQ</span></div>
+          <div class="leg-i"><div class="leg-d" style="background:#6B7280;"></div><span class="leg-t">Roomba</span></div>
+          <div class="leg-i"><div class="leg-d" style="background:#0F6E56;"></div><span class="leg-t">Dyson</span></div>
+          <div class="leg-i"><div class="leg-d" style="background:#854F0B;"></div><span class="leg-t">Roborock</span></div>
+        </div>
+        <div class="theme-lbl">Noise</div>
+        <div class="bar-row"><span class="br-label">SN IQ</span><div class="br-track"><div class="br-fill" style="width:80%;background:#DC2626;"></div></div><span class="br-val" style="color:#DC2626;">12%</span></div>
+        <div class="bar-row"><span class="br-label">Roomba j7+</span><div class="br-track"><div class="br-fill" style="width:47%;background:#6B7280;"></div></div><span class="br-val">7%</span></div>
+        <div class="bar-row"><span class="br-label">Dyson V15</span><div class="br-track"><div class="br-fill" style="width:13%;background:#0F6E56;"></div></div><span class="br-val">2%</span></div>
+        <div class="bar-row"><span class="br-label">Roborock S8</span><div class="br-track"><div class="br-fill" style="width:53%;background:#854F0B;"></div></div><span class="br-val">8%</span></div>
+        <div class="theme-lbl">App experience</div>
+        <div class="bar-row"><span class="br-label">SN IQ</span><div class="br-track"><div class="br-fill" style="width:53%;background:#2E5FA3;"></div></div><span class="br-val">8%</span></div>
+        <div class="bar-row"><span class="br-label">Roomba j7+</span><div class="br-track"><div class="br-fill" style="width:40%;background:#6B7280;"></div></div><span class="br-val">6%</span></div>
+        <div class="bar-row"><span class="br-label">Dyson V15</span><div class="br-track"><div class="br-fill" style="width:60%;background:#0F6E56;"></div></div><span class="br-val">9%</span></div>
+        <div class="bar-row"><span class="br-label">Roborock S8</span><div class="br-track"><div class="br-fill" style="width:27%;background:#854F0B;"></div></div><span class="br-val">4%</span></div>
+        <div class="ai-box"><div class="ai-lbl">AI insight</div><div class="ai-txt">SN noise rate (12%) is 6x Dyson's (2%). App complaints are shared — not SN-specific.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3 -->
+  <div class="panel" id="p3">
+    <div class="page-title">Consumer voice</div>
+    <div class="page-sub">10,432 Amazon reviews · Shark IQ Robot · April 2026</div>
+    <div class="grid3">
+      <div class="stat-card"><div class="stat-val up">68%</div><div class="stat-label">Positive sentiment</div><div class="stat-sub amber">-4% vs category avg</div></div>
+      <div class="stat-card"><div class="stat-val dn">12%</div><div class="stat-label">Top complaint rate</div><div class="stat-sub dn">Noise — 4x avg</div></div>
+      <div class="stat-card"><div class="stat-val amber">18%</div><div class="stat-label">Top wish rate</div><div class="stat-sub up">Self-clean dock</div></div>
+    </div>
+    <div class="grid2">
+      <div class="card" style="margin-bottom:0;">
+        <div class="section-label">Pros — SN differentiated advantage</div>
+        <div style="display:flex;gap:12px;margin-bottom:8px;">
+          <div class="leg-i"><div style="width:8px;height:3px;border-radius:1px;background:#16A34A;"></div><span class="leg-t">SN</span></div>
+          <div class="leg-i"><div style="width:8px;height:3px;border-radius:1px;background:#E5E7EB;"></div><span class="leg-t">Avg competitor</span></div>
+        </div>
+        <div class="pros-item">
+          <span class="pros-rank">1</span>
+          <div class="pros-main">
+            <div class="pros-name">Value for money</div>
+            <div class="pros-bars">
+              <div class="pros-bar-row"><span class="pros-bar-lbl">SN</span><div class="pros-track g"><div class="pros-fill" style="width:82%;background:#16A34A;"></div></div><span class="pros-pct" style="color:#16A34A;">41%</span></div>
+              <div class="pros-bar-row"><span class="pros-bar-lbl">Competitor</span><div class="pros-track"><div class="pros-fill" style="width:24%;background:#D1D5DB;"></div></div><span class="pros-pct" style="color:#9CA3AF;">12%</span></div>
+            </div>
+          </div>
+          <span class="diff-badge diff-pos">+29%</span>
+        </div>
+        <div class="pros-item">
+          <span class="pros-rank">2</span>
+          <div class="pros-main">
+            <div class="pros-name">Pet hair performance</div>
+            <div class="pros-bars">
+              <div class="pros-bar-row"><span class="pros-bar-lbl">SN</span><div class="pros-track g"><div class="pros-fill" style="width:44%;background:#16A34A;"></div></div><span class="pros-pct" style="color:#16A34A;">22%</span></div>
+              <div class="pros-bar-row"><span class="pros-bar-lbl">Competitor</span><div class="pros-track"><div class="pros-fill" style="width:12%;background:#D1D5DB;"></div></div><span class="pros-pct" style="color:#9CA3AF;">6%</span></div>
+            </div>
+          </div>
+          <span class="diff-badge diff-pos">+16%</span>
+        </div>
+        <div class="pros-item">
+          <span class="pros-rank">3</span>
+          <div class="pros-main">
+            <div class="pros-name">Easy setup</div>
+            <div class="pros-bars">
+              <div class="pros-bar-row"><span class="pros-bar-lbl">SN</span><div class="pros-track g"><div class="pros-fill" style="width:52%;background:#16A34A;"></div></div><span class="pros-pct" style="color:#16A34A;">26%</span></div>
+              <div class="pros-bar-row"><span class="pros-bar-lbl">Competitor</span><div class="pros-track"><div class="pros-fill" style="width:48%;background:#D1D5DB;"></div></div><span class="pros-pct" style="color:#9CA3AF;">24%</span></div>
+            </div>
+          </div>
+          <span class="diff-badge diff-neu">+2%</span>
+        </div>
+        <div class="ai-box"><div class="ai-lbl">AI insight</div><div class="ai-txt">Value (+29%) and pet hair (+16%) are true differentiators. Easy setup is table stakes (+2%) — don't over-invest in marketing this.</div></div>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="section-label">Cons — sales impact score</div>
+        <div class="cons-item">
+          <div class="cons-top"><span class="cons-rank">1</span><span class="cons-name">Noise level</span><span class="cons-pct" style="color:#DC2626;">12%</span></div>
+          <div class="cons-track"><div class="cons-fill" style="width:80%;background:#DC2626;"></div></div>
+          <div class="pills-row"><span class="pill" style="background:#FEE2E2;color:#B91C1C;">Critical sales impact</span><span class="pill" style="background:#FEE2E2;color:#B91C1C;">38% mention return</span></div>
+        </div>
+        <div class="cons-item">
+          <div class="cons-top"><span class="cons-rank">2</span><span class="cons-name">App connectivity</span><span class="cons-pct" style="color:#D97706;">8%</span></div>
+          <div class="cons-track"><div class="cons-fill" style="width:53%;background:#D97706;"></div></div>
+          <div class="pills-row"><span class="pill" style="background:#FEF3C7;color:#92400E;">Medium impact</span><span class="pill" style="background:#DBEAFE;color:#1E40AF;">Category-wide</span></div>
+        </div>
+        <div class="cons-item">
+          <div class="cons-top"><span class="cons-rank">3</span><span class="cons-name">Mapping accuracy</span><span class="cons-pct" style="color:#D97706;">7%</span></div>
+          <div class="cons-track"><div class="cons-fill" style="width:47%;background:#D97706;"></div></div>
+          <div class="pills-row"><span class="pill" style="background:#FEF3C7;color:#92400E;">Medium impact</span><span class="pill" style="background:#DBEAFE;color:#1E40AF;">Roborock leads</span></div>
+        </div>
+        <div class="cons-item">
+          <div class="cons-top"><span class="cons-rank">4</span><span class="cons-name">Battery runtime</span><span class="cons-pct" style="color:#6B7280;">6%</span></div>
+          <div class="cons-track"><div class="cons-fill" style="width:40%;background:#9CA3AF;"></div></div>
+          <div class="pills-row"><span class="pill" style="background:#F3F4F6;color:#6B7280;">Low impact</span><span class="pill" style="background:#DCFCE7;color:#15803D;">Improving via firmware</span></div>
+        </div>
+        <div class="ai-box"><div class="ai-lbl">AI insight</div><div class="ai-txt">Only noise has critical impact. App and mapping are medium but category-wide — fixing won't differentiate SN alone.</div></div>
+        <div class="action-box"><div class="action-lbl">Action</div><div class="action-txt">Focus R&D on noise only. Everything else is low impact or a shared category problem.</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-label">Wish list — unmet needs</div>
+      <div class="bubble-area">
+        <div class="bubble" style="width:64px;height:64px;background:#DBEAFE;border:1.5px solid #2E5FA3;color:#1E40AF;">Self-clean dock</div>
+        <div class="bubble" style="width:50px;height:50px;background:#DCFCE7;border:1px solid #16A34A;color:#15803D;">Quiet mode</div>
+        <div class="bubble" style="width:40px;height:40px;background:#FEF3C7;border:1px solid #D97706;color:#92400E;">Better app</div>
+        <div class="bubble" style="width:32px;height:32px;background:#EDE9FE;border:1px solid #7C3AED;color:#5B21B6;">Longer battery</div>
+        <div class="bubble" style="width:26px;height:26px;background:#FCE7F3;border:1px solid #BE185D;color:#9D174D;">Dark color</div>
+        <div class="bubble" style="width:22px;height:22px;background:#F0FDF4;border:1px solid #059669;color:#065F46;">Lighter</div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+        <div class="leg-i"><div class="leg-d" style="background:#2E5FA3;"></div><span class="leg-t">Feature</span></div>
+        <div class="leg-i"><div class="leg-d" style="background:#059669;"></div><span class="leg-t">Design</span></div>
+        <div class="leg-i"><div class="leg-d" style="background:#D97706;"></div><span class="leg-t">Smart/Tech</span></div>
+        <div class="leg-i"><div class="leg-d" style="background:#7C3AED;"></div><span class="leg-t">Price/Value</span></div>
+      </div>
+      <div class="ai-box"><div class="ai-lbl">AI insight</div><div class="ai-txt">Self-clean dock (18%) and quiet mode (14%) dominate — neither exists in any competitor. Both feed directly into the Opportunity tab recommendation.</div></div>
+    </div>
+  </div>
+
+  <!-- TAB 4 -->
+  <div class="panel" id="p4">
+    <div class="page-title">Market signals & marketing intelligence</div>
+    <div class="page-sub">Live trends · Patent activity · AI marketing recommendations · Shark IQ Robot</div>
+    <div class="grid2">
+      <div>
+        <div class="card" style="margin-bottom:12px;">
+          <div class="section-label">Social media trends</div>
+          <div class="trend-card">
+            <span class="platform-badge" style="background:#F5F3FF;color:#6D28D9;">TikTok</span>
+            <div class="trend-main"><div class="trend-name">#SilentHome</div><div class="trend-desc">Sleep-friendly cleaning routines</div></div>
+            <div class="trend-right"><span class="trend-val">340K</span><span class="trend-growth">+340% MoM</span><canvas class="spark-mini" id="sm1"></canvas></div>
+          </div>
+          <div class="trend-card">
+            <span class="platform-badge" style="background:#F0FDF4;color:#15803D;">Reddit</span>
+            <div class="trend-main"><div class="trend-name">#PetHairProblems</div><div class="trend-desc">r/RobotVacuums — 12K upvotes</div></div>
+            <div class="trend-right"><span class="trend-val">210K</span><span class="trend-growth">+18% MoM</span><canvas class="spark-mini" id="sm2"></canvas></div>
+          </div>
+          <div class="trend-card">
+            <span class="platform-badge" style="background:#EFF6FF;color:#1D4ED8;">YouTube</span>
+            <div class="trend-main"><div class="trend-name">#SmartHomeRoutine</div><div class="trend-desc">Morning automation walkthroughs</div></div>
+            <div class="trend-right"><span class="trend-val">180K</span><span class="trend-growth">+12% MoM</span><canvas class="spark-mini" id="sm3"></canvas></div>
+          </div>
+          <div class="ai-box"><div class="ai-lbl">AI insight</div><div class="ai-txt">#SilentHome +340% in one month. Directly maps to SN's noise weakness — chance to flip a product problem into a marketing story.</div></div>
+        </div>
+        <div class="card">
+          <div class="section-label">Patent activity</div>
+          <div class="patent-item"><div class="patent-dot" style="background:#D97706;"></div><div><div class="patent-title">Adaptive noise-cancellation motor control</div><div class="patent-meta"><span class="patent-co">Roborock</span><span class="patent-date">Mar 2026</span><span class="patent-tag" style="background:#FEF3C7;color:#92400E;">Watch</span></div></div></div>
+          <div class="patent-item"><div class="patent-dot" style="background:#DC2626;"></div><div><div class="patent-title">LLM-based obstacle reasoning for home robots</div><div class="patent-meta"><span class="patent-co">Matic</span><span class="patent-date">Feb 2026</span><span class="patent-tag" style="background:#FEE2E2;color:#B91C1C;">Urgent</span></div></div></div>
+          <div class="patent-item"><div class="patent-dot" style="background:#16A34A;"></div><div><div class="patent-title">Self-sterilizing brush roll with UV emitter</div><div class="patent-meta"><span class="patent-co">SharkNinja</span><span class="patent-date">Jan 2026</span><span class="patent-tag" style="background:#DCFCE7;color:#15803D;">SN owned</span></div></div></div>
+          <div class="ai-box"><div class="ai-lbl">AI insight</div><div class="ai-txt">Roborock patenting noise-reduction tech — direct collision with SN's biggest weakness. SN's UV brush patent is underutilised — worth activating in marketing.</div></div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:0;border-color:#BFDBFE;">
+        <div class="section-label" style="color:#1D4ED8;">AI marketing intelligence</div>
+        <div style="color:#1E40AF;font-size:11px;margin-bottom:12px;line-height:1.5;">Based on current trends + Shark IQ Robot's profile:</div>
+        <div class="mkt-reco">
+          <div class="reco-header"><div class="reco-num">1</div><span class="reco-title">Ride #SilentHome before competitors do</span><span class="urgency-badge badge-now">Now</span></div>
+          <div class="reco-row"><span class="reco-lbl">Trend</span><span class="reco-val reco-trend">#SilentHome +340% on TikTok</span></div>
+          <div class="reco-row"><span class="reco-lbl">Channel</span><span class="reco-val">TikTok + Instagram Reels</span></div>
+          <div class="reco-row"><span class="reco-lbl">Angle</span><span class="reco-val">Partner with sleep creators — "Clean while you sleep"</span></div>
+          <div class="reco-row"><span class="reco-lbl">Why now</span><span class="reco-val">Roborock influencer spend up 3x — window closing in 60 days</span></div>
+        </div>
+        <div class="mkt-reco">
+          <div class="reco-header"><div class="reco-num" style="background:#D97706;">2</div><span class="reco-title">Own pet hair category on Reddit</span><span class="urgency-badge badge-soon">Soon</span></div>
+          <div class="reco-row"><span class="reco-lbl">Trend</span><span class="reco-val reco-trend">#PetHairProblems +18% on Reddit</span></div>
+          <div class="reco-row"><span class="reco-lbl">Channel</span><span class="reco-val">Reddit r/RobotVacuums + YouTube reviews</span></div>
+          <div class="reco-row"><span class="reco-lbl">Angle</span><span class="reco-val">SN +16% advantage on pet hair — matches active trend</span></div>
+        </div>
+        <div class="mkt-reco">
+          <div class="reco-header"><div class="reco-num" style="background:#059669;">3</div><span class="reco-title">Value story for smart home routines</span><span class="urgency-badge badge-sustain">Sustain</span></div>
+          <div class="reco-row"><span class="reco-lbl">Trend</span><span class="reco-val reco-trend">#SmartHomeRoutine +12% on YouTube</span></div>
+          <div class="reco-row"><span class="reco-lbl">Channel</span><span class="reco-val">YouTube long-form + Smart home blogs</span></div>
+          <div class="reco-row"><span class="reco-lbl">Angle</span><span class="reco-val">"Best smart vacuum under $300" — accessible smart home entry vs $749 Dyson</span></div>
+        </div>
+        <div class="ai-box"><div class="ai-lbl">AI insight</div><div class="ai-txt">All 3 recommendations map to SN's existing strengths. #SilentHome is counterintuitive but highest urgency — turns a weakness into a story.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 5 -->
+  <div class="panel" id="p5">
+    <div class="page-title">Opportunity</div>
+    <div class="page-sub">All tabs synthesised into prioritised actions · Shark IQ Robot · April 2026</div>
+    <div class="card">
+      <div class="section-label">How we got here — data flow</div>
+      <div class="flow-row">
+        <div class="flow-node"><div class="flow-node-label">Consumer voice</div><div class="flow-node-val">Noise 12%</div><div class="flow-node-sub">Critical impact</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="flow-node-label">Competitive intel</div><div class="flow-node-val">Quiet mode ✗</div><div class="flow-node-sub">No competitor owns it</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="flow-node-label">Market signals</div><div class="flow-node-val">#SilentHome</div><div class="flow-node-sub">+340% TikTok</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node"><div class="flow-node-label">Geo gap</div><div class="flow-node-val">Japan → US</div><div class="flow-node-sub">&lt;5% US penetration</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node active"><div class="flow-node-label" style="color:#E8501A;">Opportunity</div><div class="flow-node-val" style="color:#E8501A;">Quiet robot</div><div class="flow-node-sub" style="color:#D97706;">12-month window</div></div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card" style="margin-bottom:0;">
+        <div class="section-label">Priority matrix</div>
+        <table class="matrix-table">
+          <thead><tr><th class="left">Action</th><th>Sales impact</th><th>Comp pressure</th><th>Trend urgency</th><th>Priority</th></tr></thead>
+          <tbody>
+            <tr><td class="name">Influencer #SilentHome</td><td><span class="score-pill" style="background:#DCFCE7;color:#15803D;">High</span></td><td><span class="score-pill" style="background:#FEE2E2;color:#B91C1C;">Critical</span></td><td><span class="score-pill" style="background:#FEE2E2;color:#B91C1C;">Now</span></td><td><span class="score-pill" style="background:#FEF0E8;color:#E8501A;">#1</span></td></tr>
+            <tr><td class="name">Fix noise in hardware</td><td><span class="score-pill" style="background:#FEE2E2;color:#B91C1C;">Critical</span></td><td><span class="score-pill" style="background:#FEF3C7;color:#92400E;">Medium</span></td><td><span class="score-pill" style="background:#FEF3C7;color:#92400E;">Soon</span></td><td><span class="score-pill" style="background:#FEF0E8;color:#E8501A;">#2</span></td></tr>
+            <tr><td class="name">Launch self-clean dock</td><td><span class="score-pill" style="background:#DCFCE7;color:#15803D;">High</span></td><td><span class="score-pill" style="background:#DBEAFE;color:#1E40AF;">Low</span></td><td><span class="score-pill" style="background:#FEF3C7;color:#92400E;">12 months</span></td><td><span class="score-pill" style="background:#FEF3C7;color:#92400E;">#3</span></td></tr>
+            <tr><td class="name">Own pet hair on Reddit</td><td><span class="score-pill" style="background:#FEF3C7;color:#92400E;">Medium</span></td><td><span class="score-pill" style="background:#DBEAFE;color:#1E40AF;">Low</span></td><td><span class="score-pill" style="background:#FEF3C7;color:#92400E;">Soon</span></td><td><span class="score-pill" style="background:#DCFCE7;color:#15803D;">#4</span></td></tr>
+            <tr><td class="name">Improve app / mapping</td><td><span class="score-pill" style="background:#F3F4F6;color:#6B7280;">Low</span></td><td><span class="score-pill" style="background:#F3F4F6;color:#6B7280;">Category-wide</span></td><td><span class="score-pill" style="background:#F3F4F6;color:#6B7280;">Low</span></td><td><span class="score-pill" style="background:#F3F4F6;color:#6B7280;">#5</span></td></tr>
+          </tbody>
+        </table>
+        <div class="ai-box"><div class="ai-lbl">AI insight</div><div class="ai-txt">Influencer collab ranks #1 despite noise not being fixed — time window closing. Fix noise #2 so the product earns the story being told.</div></div>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="section-label">Geographic gap</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+          <span style="display:flex;align-items:center;gap:4px;font-size:9px;color:#6B7280;"><span style="width:8px;height:8px;border-radius:2px;background:#DCFCE7;display:inline-block;"></span>Mainstream</span>
+          <span style="display:flex;align-items:center;gap:4px;font-size:9px;color:#6B7280;"><span style="width:8px;height:8px;border-radius:2px;background:#FEF3C7;display:inline-block;"></span>Emerging</span>
+          <span style="display:flex;align-items:center;gap:4px;font-size:9px;color:#6B7280;"><span style="width:8px;height:8px;border-radius:2px;background:#DBEAFE;display:inline-block;"></span>Untapped</span>
+        </div>
+        <div style="display:grid;grid-template-columns:130px 1fr 1fr 1fr;gap:4px;margin-bottom:6px;">
+          <div></div>
+          <div style="text-align:center;color:#9CA3AF;font-size:9px;font-weight:600;text-transform:uppercase;">Japan</div>
+          <div style="text-align:center;color:#9CA3AF;font-size:9px;font-weight:600;text-transform:uppercase;">EU</div>
+          <div style="text-align:center;color:#9CA3AF;font-size:9px;font-weight:600;text-transform:uppercase;">US</div>
+        </div>
+        <div class="geo-row hl">
+          <span class="geo-feat" style="color:#E8501A;font-weight:700;">Ultra-quiet mode</span>
+          <div class="geo-cell"><span class="geo-badge geo-main">Mainstream</span></div>
+          <div class="geo-cell"><span class="geo-badge geo-emerg">Emerging</span></div>
+          <div class="geo-cell"><span class="geo-badge geo-untap">Untapped</span></div>
+        </div>
+        <div class="geo-row"><span class="geo-feat">Self-clean dock</span><div class="geo-cell"><span class="geo-badge geo-emerg">Emerging</span></div><div class="geo-cell"><span class="geo-badge geo-untap">Untapped</span></div><div class="geo-cell"><span class="geo-badge geo-untap">Untapped</span></div></div>
+        <div class="geo-row"><span class="geo-feat">Mop + vacuum combo</span><div class="geo-cell"><span class="geo-badge geo-main">Mainstream</span></div><div class="geo-cell"><span class="geo-badge geo-emerg">Emerging</span></div><div class="geo-cell"><span class="geo-badge geo-emerg">Emerging</span></div></div>
+        <div class="geo-row"><span class="geo-feat">AI obstacle avoidance</span><div class="geo-cell"><span class="geo-badge geo-main">Mainstream</span></div><div class="geo-cell"><span class="geo-badge geo-main">Mainstream</span></div><div class="geo-cell"><span class="geo-badge geo-emerg">Emerging</span></div></div>
+        <div class="ai-box"><div class="ai-lbl">AI insight</div><div class="ai-txt">Ultra-quiet is Mainstream in Japan, Emerging in EU, Untapped in US — clearest geo-trend signal to act on now.</div></div>
+      </div>
+    </div>
+    <div class="opp-card">
+      <div class="opp-header">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="#E8501A"><path d="M8 1l1.8 3.6 4 .6-2.9 2.8.7 4L8 10l-3.6 1.9.7-4L2.2 5.2l4-.6z"/></svg>
+        <span class="opp-title">Ultra-quiet night mode robot vacuum</span>
+        <span class="opp-window">12-month window</span>
+      </div>
+      <div class="opp-grid">
+        <div class="opp-col"><label>Problem</label><p>Noise is SN's <strong>#1 complaint</strong> — 12% rate, 38% mention returning.</p></div>
+        <div class="opp-col"><label>Market gap</label><p>Ultra-quiet mainstream in Japan, <strong>&lt;5% US</strong> penetration. #SilentHome +340% MoM.</p></div>
+        <div class="opp-col"><label>Why SN wins</label><p>SN's motor tech + <strong>$299 price point</strong> = best shot at quiet robot under $350 before Dyson enters.</p></div>
+        <div class="opp-col"><label>Risk</label><p>Roborock filed <strong>noise-reduction patent</strong> March 2026. 12-month window before catch-up.</p></div>
+      </div>
+      <div class="action-timeline">
+        <div class="action-step" style="background:#FFF7ED;border:1px solid #FED7AA;">
+          <div class="action-timing" style="color:#EA580C;">Now — 0 to 60 days</div>
+          <div class="action-desc">Launch influencer collab around #SilentHome. Own the narrative before competitors do.</div>
+        </div>
+        <div class="action-step" style="background:#FFFBEB;border:1px solid #FDE68A;">
+          <div class="action-timing" style="color:#B45309;">Soon — Q3 2026</div>
+          <div class="action-desc">Fix noise in next hardware iteration. Target: bring complaint rate from 12% to &lt;3%.</div>
+        </div>
+        <div class="action-step" style="background:#F0FDF4;border:1px solid #BBF7D0;">
+          <div class="action-timing" style="color:#15803D;">Sustain — 12 months</div>
+          <div class="action-desc">Own "best quiet vacuum under $350". Launch self-clean dock as next product line extension.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function switchPanel(tabId, panelId) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+  setTimeout(initCharts, 100);
+}
+
+function switchTab(val) {}
+
+const panelMap = {t1:'p1',t2:'p2',t3:'p3',t4:'p4',t5:'p5'};
+window.addEventListener('DOMContentLoaded', () => {
+  const hash = window.location.hash.slice(1);
+  if (hash && panelMap[hash]) switchPanel(hash, panelMap[hash]);
+});
+
+let chartsInit = false;
+function initCharts() {
+  if (chartsInit) return;
+  chartsInit = true;
+
+  if (document.getElementById('barChart')) {
+    new Chart(document.getElementById('barChart'), {
+      type:'bar',
+      data:{labels:['SharkNinja','Roomba','Dyson','Roborock','Others'],datasets:[
+        {label:'US',data:[23,31,19,11,16],backgroundColor:'#2E5FA3',borderRadius:3,borderWidth:0},
+        {label:'Global',data:[14,22,21,28,15],backgroundColor:'#059669',borderRadius:3,borderWidth:0}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#6B7280',font:{size:9}},grid:{display:false},border:{display:false}},y:{ticks:{color:'#9CA3AF',font:{size:9},callback:v=>v+'%'},grid:{color:'#F3F4F6'},border:{display:false},max:40}}}
+    });
+  }
+
+  if (document.getElementById('scatter')) {
+    new Chart(document.getElementById('scatter'), {
+      type:'scatter',
+      data:{datasets:[
+        {label:'SN IQ',data:[{x:299,y:4.2}],backgroundColor:'#2E5FA3',pointRadius:8},
+        {label:'Roomba j7+',data:[{x:449,y:4.4}],backgroundColor:'#6B7280',pointRadius:8},
+        {label:'Dyson V15',data:[{x:749,y:4.5}],backgroundColor:'#0F6E56',pointRadius:8},
+        {label:'Roborock S8',data:[{x:399,y:4.3}],backgroundColor:'#854F0B',pointRadius:8}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: $${ctx.parsed.x} · ${ctx.parsed.y}★`}}},scales:{x:{min:200,max:850,ticks:{color:'#6B7280',font:{size:9},callback:v=>'$'+v},grid:{color:'#F3F4F6'},border:{display:false}},y:{min:3.8,max:4.8,ticks:{color:'#9CA3AF',font:{size:9},callback:v=>v+'★'},grid:{color:'#F3F4F6'},border:{display:false}}}}
+    });
+  }
+
+  function spark(id,data,color){
+    const c=document.getElementById(id);
+    if(!c)return;
+    c.width=48;c.height=16;
+    new Chart(c,{type:'line',data:{labels:data.map((_,i)=>i),datasets:[{data,borderColor:color,borderWidth:1.5,pointRadius:0,tension:0.4,fill:false}]},options:{responsive:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:false}});
+  }
+  spark('sm1',[10,14,20,30,50,80,130,200,270,340],'#6D28D9');
+  spark('sm2',[140,148,155,160,168,175,182,190,200,210],'#15803D');
+  spark('sm3',[120,128,135,140,148,155,160,165,172,180],'#1D4ED8');
+}
+
+setTimeout(initCharts, 200);
+</script>
