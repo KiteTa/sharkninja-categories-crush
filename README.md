@@ -18,7 +18,7 @@ Aggregates Amazon reviews, social media trends, and patent data across competing
 
 | File | Description |
 |------|-------------|
-| `sharkninja_main_combined.html` | Overview dashboard with sidebar navigation |
+| `index.html` | Overview dashboard with sidebar navigation |
 | `sharkninja_all_tabs_white.html` | Full detail view — all 5 tabs per product |
 
 ## Stack
@@ -28,7 +28,7 @@ Plain HTML/CSS/JS — no build step. Charts via [Chart.js 4.4](https://www.chart
 ## Running locally
 
 ```bash
-open sharkninja_main_combined.html
+open [index.html](https://kiteta.github.io/sharkninja-categories-crush/)
 ```
 
 No server required. Open either file directly in a browser.
